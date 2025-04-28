@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Le lien entre les esprits curieux et le monde de la data</title>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #6c757d;
+            --accent-color: #e63946;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .logo span {
+            color: var(--accent-color);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        /* Menu burger pour mobile */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+        }
+        
+        .menu-toggle span {
+            height: 3px;
+            width: 100%;
+            background-color: white;
+            border-radius: 3px;
+        }
+        
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem 0;
+        }
+        
+        .slideshow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+        
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            z-index: 0;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            padding: 2rem;
+            margin-top: 5rem; /* Espace pour le header du club */
+        }
+        
+        /* Club header modifié pour être plus responsive */
+        .club-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+            text-align: left;
+            width: 100%;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .club-logo {
+            width: 80px;
+            height: auto;
+            margin-right: 1rem;
+        }
+        
+        .campaign-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #d62f3c;
+        }
+        
+        section {
+            padding: 4rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        
+        .card-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .card-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .card p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .card ul {
+            list-style-position: inside;
+            margin-left: 0.5rem;
+        }
+        
+        .card ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: var(--primary-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border: 4px solid var(--accent-color);
+            top: 15px;
+            right: -13px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .left {
+            left: 0;
+        }
+        
+        .right {
+            left: 50%;
+        }
+        
+        .right::after {
+            left: -13px;
+        }
+        
+        .timeline-content {
+            padding: 20px;
+            background-color: white;
+            position: relative;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Style pour les photos du bureau */
+        .team-card .card-img {
+            border-radius: 50%;  /* Pour des photos rondes */
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            border: 4px solid var(--primary-color);
+        }
+        
+        .team-card {
+            text-align: center;
+        }
+        
+        .team-card h3 {
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .team-card p {
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+        
+        /* Styles pour mobile et tablette */
+        @media (max-width: 968px) {
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            /* Menu burger */
+            .menu-toggle {
+                display: flex;
+            }
+            
+            nav ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                margin-top: 1rem;
+                background-color: var(--primary-color);
+                padding: 1rem 0;
+                border-radius: 0 0 8px 8px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+            
+            nav.mobile-nav-active ul {
+                display: flex;
+            }
+            
+            nav ul li {
+                margin: 0.5rem 0;
+                text-align: center;
+                width: 100%;
+            }
+            
+            nav ul li a {
+                display: block;
+                padding: 0.8rem;
+                width: 100%;
+            }
+            
+            .nav-container {
+                flex-wrap: wrap;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .club-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .club-logo {
+                margin-bottom: 1rem;
+                margin-right: 0;
+            }
+            
+            .campaign-title {
+                font-size: 1.5rem;
+            }
+            
+            /* Timeline responsive */
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-item::after {
+                left: 18px;
+            }
+            
+            .left, .right {
+                left: 0;
+            }
+            
+            .right::after {
+                left: 18px;
+            }
+            
+            /* Grid responsive */
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-content {
+                padding: 1rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .card-img {
+                height: 180px;
+            }
+            
+            .team-card .card-img {
+                width: 150px;
+                height: 150px;
+            }
+        }
+        
+        /* Nouveaux styles pour le programme de formation */
+        .formation-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .level-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .level-tab {
+            padding: 1rem 2rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            margin: 0 0.5rem 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .level-tab:hover {
+            background-color: #3a5a84;
+        }
+        
+        .level-tab.active {
+            background-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .level-content {
+            display: none;
+        }
+        
+        .level-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .module-accordion {
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: white;
+        }
+        
+        .module-header {
+            padding: 1.2rem;
+            background-color: #f0f4f8;
+            color: var(--primary-color);
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .module-header:hover {
+            background-color: #e0e7f1;
+        }
+        
+        .module-header::after {
+            content: '+';
+            position: absolute;
+            right: 1.2rem;
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+        
+        .module-header.active {
+            background-color: #e0e7f1;
+        }
+        
+        .module-header.active::after {
+            content: '-';
+        }
+        
+        .module-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .module-inner {
+            padding: 1.5rem;
+        }
+        
+        .module-inner h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+            margin-top: 1.2rem;
+        }
+        
+        .module-inner h4:first-child {
+            margin-top: 0;
+        }
+        
+        .module-inner ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 1.2rem;
+        }
+        
+        .module-inner ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Logos des technologies */
+        .tech-logos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 2rem 0;
+            gap: 1rem;
+        }
+        
+        .tech-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 1rem;
+        }
+        
+        .tech-logo img {
+            height: 60px;
+            width: auto;
+            margin-bottom: 0.5rem;
+            filter: grayscale(0.3);
+            transition: all 0.3s;
+        }
+        
+        .tech-logo:hover img {
+            filter: grayscale(0);
+            transform: scale(1.1);
+        }
+        
+        .tech-logo p {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--secondary-color);
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .social-links {
+            margin: 1.5rem 0;
+        }
+        
+        .social-links a {
+            color: white;
+            margin: 0 10px;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container nav-container">
+            <div class="logo">Nex<span>us</span></div>
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav id="navigation">
+                <ul>
+                    <li><a href="#accueil">Accueil</a></li>
+                    <li><a href="#bureau">Membres du Bureau</a></li>
+                    <li><a href="#vision">Notre Bureau</a></li>
+                    <li><a href="#programme">Programme</a></li>
+                    <li><a href="#activites">Activités</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="accueil" class="hero">
+        <div class="slideshow">
+            <div class="slide active" style="background-image: url('1.webp');"></div>
+            <div class="slide" style="background-image: url('2.webp');"></div>
+            <div class="slide" style="background-image: url('3.webp');"></div>
+            <div class="slide" style="background-image: url('4.webp');"></div>
+            <div class="slide" style="background-image: url('5.webp');"></div>
+            <div class="slide" style="background-image: url('6.webp');"></div>
+        </div>
+        <div class="overlay"></div>
+        <div class="club-header">
+            <img src="data.webp" alt="Logo du club" class="club-logo">
+            <p class="campaign-title">CAMPAGNE ENSEA DATA SCIENCE CLUB</p>
+        </div>
+        <div class="hero-content">
+            <h1>Nexus</h1>
+            <p>Le lien entre les esprits curieux et le monde de la data</p>
+            <a href="#programme" class="btn">Découvrir notre programme</a>
+        </div>
+    </section>
+
+    <!-- Déplacement de la section Membres du Bureau en premier, comme demandé -->
+    <section id="bureau" class="container">
+        <div class="section-title">
+            <h2>Membres du Bureau</h2>
+        </div>
+        <div class="grid">
+            <!-- Président -->
+            <div class="card team-card">
+                <div class="card-img" style="background-image: url('./images/kindo.jpg');"></div>
+                <div class="card-content">
+                    <h3>KINDO Nathan</h3>
+                    <p>Président</p>
+                </div>
+            </div>
+            
+            <!-- Vice-Président -->
+            <div class="card team-card">
+                <div class="card-img" style="background-image: url('./images/vice-president.jpg');"></div>
+                <div class="card-content">
+                    <h3>NJOMANI Fred</h3>
+                    <p>Secrétaire Général</p>
+                </div>
+            </div>
+            
+            <!-- Secrétaire Général -->
+            <div class="card team-card">
+                <div class="card-img" style="background-image: url('./images/secretaire.jpg');"></div>
+                <div class="card-content">
+                    <h3>ABI Manoah</h3>
+                    <p>Responsable à la formation</p>
+                </div>
+            </div>
+            
+            <!-- Trésorier -->
+            <div class="card team-card">
+                <div class="card-img" style="background-image: url('./images/tresorier.jpg');"></div>
+                <div class="card-content">
+                    <h3>KOUAME Gloria</h3>
+                    <p>Responsable aux finances</p>
+                </div>
+            </div>
+            
+            <!-- Responsable Communication -->
+            <div class="card team-card">
+                <div class="card-img" style="background-image: url('./images/communication.jpg');"></div>
+                <div class="card-content">
+                    <h3>FOGAING Franck</h3>
+                    <p>Responsable Communication</p>
+                </div>
+            </div>
+            
+            <!-- Responsable Organisation -->
+            <div class="card team-card">
+                <div class="card-img" style="background-image: url('./images/communication.jpg');"></div>
+                <div class="card-content">
+                    <h3>COULIBALY Aïcha</h3>
+                    <p>Responsable à l'Organisation</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="vision" class="container">
+        <div class="section-title">
+            <h2>Notre Bureau</h2>
+        </div>
+        <div class="grid">
+            <div class="card">
+                <div class="card-img" style="background-image: url('nexus.webp');"></div>
+                <div class="card-content">
+                    <h3>Pourquoi Nexus ?</h3>
+                    <p><strong>"Nexus"</strong> est un mot latin qui signifie "lien", "connexion", "point de rencontre".</p>
+                    <p>Nous avons choisi ce nom car il symbolise parfaitement notre ambition : faire du club un carrefour entre les esprits curieux et le monde de la data. C'est aussi l'endroit où les talents se rencontrent pour ensemble aller plus loin.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-img" style="background-image: url('vision.webp');"></div>
+                <div class="card-content">
+                    <h3>Notre Vision</h3>
+                    <p>Faire du club un espace collaboratif et un environnement où chaque personne peut trouver sa part de connaissances.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-img" style="background-image: url('objectif.webp');"></div>
+                <div class="card-content">
+                    <h3>Nos Objectifs</h3>
+                    <ul>
+                        <li>Rendre la data science accessible à travers les formations</li>
+                        <li>Déclencher une motivation particulière des élèves pour la data à travers les challenges</li>
+                        <li>Favoriser la collaboration entre les membres</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Programme modifiée avec des onglets et des modules déroulants -->
+    <section id="programme" style="background-color: #f0f4f8;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Programme de Formation</h2>
+            </div>
+
+            <!-- Logos des technologies -->
+            <div class="tech-logos">
+                <div class="tech-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1869px-Python-logo-notext.svg.png" alt="Python Logo">
+                    <p>Python</p>
+                </div>
+                <div class="tech-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/NumPy_logo_2020.svg/1280px-NumPy_logo_2020.svg.png" alt="NumPy Logo">
+                    <p>NumPy</p>
+                </div>
+                <div class="tech-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Pandas_logo.svg/2560px-Pandas_logo.svg.png" alt="Pandas Logo">
+                    <p>Pandas</p>
+                </div>
+                <div class="tech-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Matplotlib_icon.svg/1200px-Matplotlib_icon.svg.png" alt="Matplotlib Logo">
+                    <p>Matplotlib</p>
+                </div>
+                <div class="tech-logo">
+                    <img src="https://seaborn.pydata.org/_static/logo-wide-lightbg.svg" alt="Seaborn Logo">
+                    <p>Seaborn</p>
+                </div>
+                <div class="tech-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Scikit_learn_logo_small.svg/1200px-Scikit_learn_logo_small.svg.png" alt="Scikit-learn Logo">
+                    <p>Scikit-learn</p>
+                </div>
+                <div class="tech-logo">
+                    <img src="https://www.r-project.org/logo/Rlogo.svg" alt="R Logo">
+                    <p>R</p>
+                </div>
+                <div class="tech-logo">
+                    <img src="https://www.mysql.com/common/logos/logo-mysql-170x115.png" alt="SQL Logo">
+                    <p>SQL</p>
+                </div>
+            </div>
+
+            <div class="formation-container">
+                <!-- Onglets de niveau -->
+                <div class="level-tabs">
+                    <button class="level-tab active" data-level="niveau1">Niveau 1: Fondations en Data Science</button>
+                    <button class="level-tab" data-level="niveau2">Niveau 2: Machine Learning Avancé</button>
+                </div>
+
+                <!-- Contenu du Niveau 1 -->
+                <div id="niveau1" class="level-content active">
+                    <!-- Module 1 -->
+                    <div class="module-accordion">
+                        <div class="module-header">
+                            Module 1 : Introduction à Python et à l'Algorithmie
+                        </div>
+                        <div class="module-content">
+                            <div class="module-inner">
+                                <ul>
+                                    <li>Bases de Python : types de données, variables, opérations</li>
+                                    <li>Structures de contrôle : conditions, boucles</li>
+                                    <li>Fonctions et modules</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Module 2 -->
+                    <div class="module-accordion">
+                        <div class="module-header">
+                            Module 2 : Manipulation et Visualisation des Données
+                        </div>
+                        <div class="module-content">
+                            <div class="module-inner">
+                                <ul>
+                                    <li>Introduction aux bibliothèques Pandas et NumPy</li>
+                                    <li>Nettoyage et transformation des données</li>
+                                    <li>Visualisation avec Matplotlib et Seaborn</li>
+                                    <li>Statistiques descriptives (moyenne, médiane, écart-type, correlation)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Module 3 -->
+                    <div class="module-accordion">
+                        <div class="module-header">
+                            Module 3 : Gestion et Stockage des Données
+                        </div>
+                        <div class="module-content">
+                            <div class="module-inner">
+                                <ul>
+                                    <li>Introduction aux bases de données SQL</li>
+                                    <li>Lecture et écriture de fichiers CSV, Excel</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Module 4 -->
+                    <div class="module-accordion">
+                        <div class="module-header">
+                            Module 4 : Programmation Orientée Objet (POO) en Data Science
+                        </div>
+                        <div class="module-content">
+                            <div class="module-inner">
+                                <ul>
+                                    <li>Classes et objets en Python</li>
+                                    <li>Organisation du code pour des projets data</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Module 5 -->
+                    <div class="module-accordion">
+                        <div class="module-header">
+                            Module 5 : Introduction au Machine Learning
+                        </div>
+                        <div class="module-content">
+                            <div class="module-inner">
+                                <ul>
+                                    <li>Supervised vs Unsupervised Learning</li>
+                                    <li>Algorithmes de base : Régression linéaire, k-means, KNN</li>
+                                    <li>Utilisation de Scikit-learn pour entraîner un modèle
